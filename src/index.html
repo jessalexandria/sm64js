@@ -29,6 +29,7 @@
   #totlBar a{color:#8ab4ff;text-decoration:none}
   #totlBar .stats{color:#9aa;font-size:11px;display:flex;gap:12px}
   #gameWrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+  #gameCanvas{position:fixed;inset:0;margin:auto;max-width:100vw;max-height:100vh;z-index:4}
   #gameWrap.hide{display:none}
   canvas#fullCanvas{max-width:100vw;max-height:100vh;cursor:none}
   .hidden-el{display:none!important}
@@ -48,7 +49,7 @@
   <span id="fps" class="hidden-el"></span><span id="maxFps" class="hidden-el"></span><span id="timing-total" class="hidden-el"></span>
 </div>
 <div id="totlBar"><a href="../">&#8592; verse</a><div class="stats"><span id="fpsBar"></span></div></div>
-<canvas id="gameCanvas" width="640" height="480" class="hidden-el"></canvas>
+<canvas id="gameCanvas" width="640" height="480" hidden></canvas>
 <div id="gameWrap" class="hide">
 <canvas id="fullCanvas" width="640" height="480"></canvas>
 </div>
