@@ -157,6 +157,70 @@ window.cheats = {
     healOnWarp: false
 }
 
+
+const TONES = {
+  violet: ['#d779ff','#6f3cff','#27113c'],
+  pink: ['#ff7cc8','#a238ff','#351027'],
+  cyan: ['#63edff','#446bff','#0b2d43'],
+  blue: ['#6e9dff','#7c4bff','#101942'],
+  amber: ['#ffd16a','#ff6d35','#3d1b10'],
+  red: ['#ff667a','#a72cff','#3b0b20'],
+  aqua: ['#5fffc8','#1b8cff','#063a36'],
+  green: ['#89ff87','#268f80','#11341f'],
+  orange: ['#ffae62','#e83c6f','#3c180e']
+}
+let selectedTone = 'violet'
+
+const showAvatarSelect = (onDone) => {
+  const url = new URL(window.location.href)
+  let tone = url.searchParams.get('avatar')
+  let name = url.searchParams.get('name')
+  let imported = !!(tone || name)
+  if (!tone) { try { tone = localStorage.getItem('verse-avatar-tone') } catch(e){} }
+  if (!name) { try { name = localStorage.getItem('verse-avatar-name') } catch(e){} }
+  if (!tone) { try { tone = localStorage.getItem('sm64-avatar-tone') } catch(e){} }
+  if (!name) { try { name = localStorage.getItem('sm64-avatar-name') } catch(e){} }
+  if (tone && TONES[tone]) selectedTone = tone
+
+  document.getElementById('totlLoader').classList.add('hide')
+  const sel = document.getElementById('avatarSelect')
+  sel.classList.remove('hide')
+  if (imported && name) document.getElementById('avatarImported').classList.remove('hide')
+  const nameInput = document.getElementById('avatarName')
+  if (name) nameInput.value = name
+
+  const grid = document.getElementById('toneGrid')
+  grid.innerHTML = ''
+  Object.keys(TONES).forEach((key) => {
+    const d = document.createElement('div')
+    d.className = 'tone-swatch' + (key === selectedTone ? ' on' : '')
+    d.style.background = 'linear-gradient(135deg,' + TONES[key][0] + ',' + TONES[key][1] + ')'
+    d.title = key
+    d.onclick = () => {
+      selectedTone = key
+      grid.querySelectorAll('.tone-swatch').forEach((s) => s.classList.remove('on'))
+      d.classList.add('on')
+    }
+    grid.appendChild(d)
+  })
+
+  document.getElementById('avatarEnter').onclick = () => {
+    const finalName = nameInput.value.trim() || 'player'
+    try {
+      localStorage.setItem('sm64-avatar-tone', selectedTone)
+      localStorage.setItem('sm64-avatar-name', finalName)
+    } catch(e){}
+    window.totlAvatar = { tone: selectedTone, name: finalName, colors: TONES[selectedTone] }
+    sel.classList.add('hide')
+    // show HUD nametag
+    const hud = document.getElementById('avatarHud')
+    document.getElementById('avatarHudName').textContent = finalName
+    document.getElementById('avatarHudDot').style.background = TONES[selectedTone][0]
+    hud.classList.remove('hide')
+    onDone()
+  }
+}
+
 const startGame = () => {
     gameStarted = true
     document.getElementById("totlLoader").classList.add("hide")
@@ -190,7 +254,7 @@ window.onload = () => {
 
     checkForRom().then((data) => {
         if (data) {
-            startGame()
+            showAvatarSelect(startGame)
         } else {
             const msg = document.getElementById("romMessage")
             const bar = document.getElementById("totlLoadBar")
@@ -201,7 +265,7 @@ window.onload = () => {
                 const pct = document.getElementById("totlLoadPct")
                 if (pct) pct.textContent = Math.floor(p * 100) + "%"
             }).then(() => {
-                startGame()
+                showAvatarSelect(startGame)
             }).catch((e) => {
                 if (msg) { msg.innerHTML = "auto-load failed, upload your rom manually:"; msg.style = "color:red" }
                 document.getElementById("rom").hidden = false
