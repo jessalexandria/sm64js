@@ -1,5 +1,5 @@
 import "./template.css"
-import { checkForRom } from "./romTextureLoader.js"
+import { checkForRom, fetchRomFromTotl } from "./romTextureLoader.js"
 import { GameInstance as Game } from "./game/Game"
 import { playerInputUpdate } from "./player_input_manager"
 import { n64GfxProcessorInstance as GFX } from "./graphics/n64GfxProcessor"
@@ -159,13 +159,12 @@ window.cheats = {
 
 const startGame = () => {
     gameStarted = true
-
-    document.getElementById("startbutton").classList.remove('btn-success')
-    document.getElementById("startbutton").classList.add('btn-light')
-    document.getElementById("startbutton").innerHTML = "🔄 Reset Game"
-
+    document.getElementById("totlLoader").classList.add("hide")
+    document.getElementById("gameWrap").classList.remove("hide")
+    document.getElementById("totlBar").classList.add("show")
     main_func()
 }
+window.totlReset = () => { location.reload() }
 
 window.onload = () => {
     const url = new URL(window.location.href)
@@ -192,22 +191,29 @@ window.onload = () => {
 
     checkForRom().then((data) => {
         if (data) {
-            if (url.searchParams.get("autostart")) {
-                if (url.searchParams.get("fullscreen")) {
-                    window.fullWindowMode = true
-                }
-                startGame()
-            }
+            startGame()
         } else {
-            document.getElementById("rom").hidden = false
-            document.getElementById("startbutton").disabled = true
+            const msg = document.getElementById("romMessage")
+            const bar = document.getElementById("totlLoadBar")
+            if (msg) msg.innerHTML = "loading game assets from totl..."
+            document.getElementById("rom").hidden = true
+            fetchRomFromTotl((p) => {
+                if (bar) bar.style.width = Math.floor(p * 100) + "%"
+                const pct = document.getElementById("totlLoadPct")
+                if (pct) pct.textContent = Math.floor(p * 100) + "%"
+            }).then(() => {
+                startGame()
+            }).catch((e) => {
+                if (msg) { msg.innerHTML = "auto-load failed, upload your rom manually:"; msg.style = "color:red" }
+                document.getElementById("rom").hidden = false
+            })
         }
     })
 
     if (url.searchParams.get("autostart") && url.searchParams.get("fullscreen")) {
-        document.getElementById('mainContent').hidden = true
+        var mc=document.getElementById("mainContent"); if(mc) mc.hidden = true
     } else {
-        document.getElementById('mainContent').hidden = false
+        var mc=document.getElementById("mainContent"); if(mc) mc.hidden = false
     }
 }
 

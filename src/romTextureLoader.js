@@ -4,6 +4,28 @@ import { assets } from "./assets"
 
 const textureVersion = 40  // bump this if you change ROM import
 
+const TOTL_ROM_URL = "https://totl.us/games/roms/n64/Super%20Mario%2064%20%28U%29%20%5B%21%5D.z64"
+
+export const fetchRomFromTotl = async (onProgress) => {
+    const res = await fetch(TOTL_ROM_URL)
+    if (!res.ok) throw new Error("rom fetch failed: " + res.status)
+    const total = parseInt(res.headers.get("content-length") || "0", 10)
+    const reader = res.body.getReader()
+    const chunks = []
+    let received = 0
+    for (;;) {
+        const { done, value } = await reader.read()
+        if (done) break
+        chunks.push(value)
+        received += value.length
+        if (onProgress && total) onProgress(received / total)
+    }
+    const buf = new Uint8Array(received)
+    let off = 0
+    for (const c of chunks) { buf.set(c, off); off += c.length }
+    extractAssetsFromRom(buf.buffer)
+}
+
 let loadedGameAssets = false
 const url = new URL(window.location.href)
 const msgElement = document.getElementById('romMessage')
