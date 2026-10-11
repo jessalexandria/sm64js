@@ -57,8 +57,9 @@
     
 <script>
 window.__errs=[];
-window.onerror=function(m,s,ln,col){var t="ERR: "+m+" @"+ln+":"+col;window.__errs.push(t);var d=document.getElementById("romMessage");if(d){d.innerHTML=t;d.style="color:#ff667a"};return false;};
-window.addEventListener("unhandledrejection",function(e){var t="REJECT: "+((e.reason&&e.reason.message)||e.reason);window.__errs.push(t);var d=document.getElementById("romMessage");if(d){d.innerHTML=t;d.style="color:#ff667a"}});
+function totlShowErr(t){window.__errs.push(t);var d=document.getElementById("totlErr");if(!d){d=document.createElement("div");d.id="totlErr";d.style="position:fixed;bottom:0;left:0;right:0;background:#3b0b20;color:#ff667a;font:12px monospace;padding:8px;z-index:99999;white-space:pre-wrap";document.body.appendChild(d);}d.textContent=t;}
+window.onerror=function(m,s,ln,col){totlShowErr("ERR: "+m+" @"+ln+":"+col);return false;};
+window.addEventListener("unhandledrejection",function(e){totlShowErr("REJECT: "+((e.reason&&e.reason.message)||e.reason))});
 </script>
 </body>
 </html>
