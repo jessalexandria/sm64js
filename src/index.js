@@ -161,7 +161,6 @@ const startGame = () => {
     gameStarted = true
     document.getElementById("totlLoader").classList.add("hide")
     document.getElementById("gameWrap").classList.remove("hide")
-    document.getElementById("totlBar").classList.add("show")
     main_func()
 }
 window.totlReset = () => { location.reload() }
