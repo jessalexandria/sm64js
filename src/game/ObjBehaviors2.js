@@ -446,7 +446,7 @@ export const obj_roll_to_match_yaw_turn = (targetYaw, maxRoll, rollSpeed) => {
     const o = gLinker.ObjectListProcessor.gCurrentObject;
     const w = {}
 
-    const targetRoll = o.rawData[oMoveAngleYaw] - targetYaw;
+    let targetRoll = o.rawData[oMoveAngleYaw] - targetYaw;
     w.value = targetRoll;
     const clampReturn = clamp_s16(w, -maxRoll, maxRoll);
     targetRoll = w.value;
