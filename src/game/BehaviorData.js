@@ -59,6 +59,7 @@ import * as _boo_cage                 from "./behaviors/boo_cage.inc"
 import * as _bowling_ball             from "./behaviors/bowling_ball.inc"
 import * as _breakable_box            from "./behaviors/breakable_box.inc"
 import * as _breakable_box_small      from "./behaviors/breakable_box_small.inc"
+import * as _totl_block                 from "./behaviors/totl_block.inc"
 import * as _breakable_wall           from "./behaviors/breakable_wall.inc"
 import * as _bully                    from "./behaviors/bully.inc"
 import * as _butterfly                from "./behaviors/butterfly.inc"
@@ -2770,6 +2771,19 @@ const bhvBreakableBox = [
     CALL_NATIVE('bhv_init_room'),
     BEGIN_LOOP(),
         CALL_NATIVE('bhv_breakable_box_loop'),
+        CALL_NATIVE('SurfaceLoad.load_object_collision_model'),
+    END_LOOP(),
+    BREAK(),
+]
+
+const bhvTotlBlock = [
+    BEGIN(OBJ_LIST_SURFACE, 'bhvTotlBlock'),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    LOAD_COLLISION_DATA(breakable_box_seg8_collision_08012D70),
+    SET_FLOAT(oCollisionDistance, 2000),
+    CALL_NATIVE('bhv_init_room'),
+    BEGIN_LOOP(),
+        CALL_NATIVE('bhv_totl_block_loop'),
         CALL_NATIVE('SurfaceLoad.load_object_collision_model'),
     END_LOOP(),
     BREAK(),

@@ -1,5 +1,6 @@
 import "./template.css"
 import { checkForRom, fetchRomFromTotl } from "./romTextureLoader.js"
+import { initBuildMode } from "./totl_build.js"
 import { GameInstance as Game } from "./game/Game"
 import { playerInputUpdate } from "./player_input_manager"
 import { n64GfxProcessorInstance as GFX } from "./graphics/n64GfxProcessor"
@@ -223,6 +224,7 @@ const showAvatarSelect = (onDone) => {
 
 const startGame = () => {
     gameStarted = true
+    setTimeout(() => { try { initBuildMode() } catch(e){} }, 1000)
     document.getElementById("totlLoader").classList.add("hide")
     document.getElementById("gameWrap").classList.remove("hide")
     main_func()

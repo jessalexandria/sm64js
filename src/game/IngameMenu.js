@@ -933,6 +933,7 @@ class IngameMenu {
         let lowerBound;
 
         let dialog = seg2_dialog_table[this.gDialogID];
+        if (!dialog) return;
 
         switch (this.gMenuState) {
             case MENU_STATE_DIALOG_OPENING:
