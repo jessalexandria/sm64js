@@ -53,5 +53,10 @@
 </div>
 
     
+<script>
+window.__errs=[];
+window.onerror=function(m,s,ln,col){var t="ERR: "+m+" @"+ln+":"+col;window.__errs.push(t);var d=document.getElementById("romMessage");if(d){d.innerHTML=t;d.style="color:#ff667a"};return false;};
+window.addEventListener("unhandledrejection",function(e){var t="REJECT: "+((e.reason&&e.reason.message)||e.reason);window.__errs.push(t);var d=document.getElementById("romMessage");if(d){d.innerHTML=t;d.style="color:#ff667a"}});
+</script>
 </body>
 </html>

@@ -58,7 +58,7 @@ module.exports = {
         // })
     ],
     output: {
-        publicPath: "/",
+        publicPath: "./",
         filename: "[name]-[hash].js"
     },
     optimization: {
