@@ -24,10 +24,6 @@
   .totl-progress{width:min(420px,80vw);height:6px;background:#1a1a2a;border-radius:3px;overflow:hidden}
   #totlLoadBar{height:100%;width:0%;background:linear-gradient(90deg,#6f3cff,#63edff);border-radius:3px;transition:width .2s}
   #totlLoadPct{color:#9aa;font-size:12px}
-  #totlBar{position:fixed;top:0;left:0;right:0;display:none;align-items:center;justify-content:space-between;padding:10px 16px;background:rgba(10,10,18,.7);backdrop-filter:blur(8px);z-index:5;font-size:13px}
-  #totlBar.show{display:flex}
-  #totlBar a{color:#8ab4ff;text-decoration:none}
-  #totlBar .stats{color:#9aa;font-size:11px;display:flex;gap:12px}
   #gameWrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
   #gameCanvas{position:fixed;inset:0;width:100vw;height:100vh;object-fit:fill;background:#000;z-index:4}
   #gameWrap.hide{display:none}
@@ -48,7 +44,6 @@
   <input id="slider" class="hidden-el" type="range">
   <span id="fps" class="hidden-el"></span><span id="maxFps" class="hidden-el"></span><span id="timing-total" class="hidden-el"></span>
 </div>
-<div id="totlBar"><a href="../">&#8592; verse</a><div class="stats"><span id="fpsBar"></span></div></div>
 <canvas id="gameCanvas" width="640" height="480" hidden></canvas>
 <div id="gameWrap" class="hide">
 <canvas id="fullCanvas" width="640" height="480"></canvas>
